@@ -6,6 +6,7 @@ var PLAY = 1;
 var END = 0;
 var gameState = 1;
 var treasureCollection = 0;
+var go, goImg;
 
 function preload(){
   pathImg = loadImage("Road.png");
@@ -42,31 +43,12 @@ swordGroup=new Group();
 
 function draw() {
 
-  background(0);
+  if(gameState === PLAY){
+    background(0);
   boy.x = World.mouseX;
   
   edges= createEdgeSprites();
   boy.collide(edges);
-  
-  if(gameState === END){
-    cashG.destroyEach();
-    cashG.setVelocityYEach(0);
-    
-    diamondsG.destroyEach();
-    diamondsG.setVelocityYEach(0);
-    
-    jwelleryG.destroyEach();
-    jwelleryG.setVelocityYEach(0);
-    
-    swordGroup.setVelocityYEach(0);
-    swordGroup.destroyEach();
-    
-    go.createSprite(50,50,200,200);
-    go.addImage(goImg);
-    
-    
-  }
-  
   //code to reset the background
   if(path.y > 400 ){
     path.y = height/2;
@@ -92,10 +74,35 @@ function draw() {
     }else{
       if(swordGroup.isTouching(boy)) {
         gameState = END;
-        boy.addAnimation(SahilRunning,endImg);
-        
+        boy.destroy();
+ 
     }
+  
+    }
+
+  
+  if(gameState === END){
+    cashG.destroyEach();
+    cashG.setVelocityYEach(0);
+    
+    diamondsG.destroyEach();
+    diamondsG.setVelocityYEach(0);
+    
+    jwelleryG.destroyEach();
+    jwelleryG.setVelocityYEach(0);
+    
+    swordGroup.setVelocityYEach(0);
+    swordGroup.destroyEach();
+    
+    go = createSprite(200,200,50,50);
+    go.addImage(goImg);
+    go.scale = 0.5;
+    
+    
   }
+  
+  
+   
 
   drawSprites();
   textSize(20);
@@ -103,6 +110,8 @@ function draw() {
   text("Treasure: "+ treasureCollection,150,30);
 
 }
+    
+  }
 
 function createCash() {
   if (World.frameCount % 50 == 0) {
